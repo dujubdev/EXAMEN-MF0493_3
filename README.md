@@ -8,6 +8,14 @@ La aplicación permite explorar información detallada de 15 bandas icónicas, s
 
 ---
 
+## 🚀 Acceso en Línea
+
+**Accede a Rockify aquí:** [https://dujubdev.github.io/EXAMEN-MF0493_3/](https://dujubdev.github.io/EXAMEN-MF0493_3/)
+
+La aplicación está desplegada en GitHub Pages y funciona completamente en el navegador. Puedes instalarla como app en dispositivos móviles.
+
+---
+
 ## ✨ Características Principales
 
 ### 🎵 Funcionalidades Principales
@@ -159,11 +167,11 @@ rockify/
 
 ---
 
-## 🚀 Instalación y Ejecución
+## 🚀 Instalación Local
 
 ### Requisitos
 - Navegador moderno (Chrome, Firefox, Edge, Safari)
-- Servidor HTTP (no funciona con file://)
+- Servidor HTTP (no funciona con `file://`)
 
 ### Opción 1: Servidor Local Simple
 
@@ -186,9 +194,120 @@ Luego accede a: `http://localhost:8000`
 2. Click derecho en `index.html`
 3. Selecciona "Open with Live Server"
 
-### Opción 3: GitHub Pages
+---
 
-Ver sección de despliegue.
+## 📤 Despliegue en GitHub Pages
+
+### Pasos para desplegar:
+
+#### 1. Inicializar repositorio Git (si no lo has hecho)
+```bash
+cd tu-proyecto/EXAMEN-MF0493_3
+git init
+git add .
+git commit -m "Rockify PWA - Módulo MF0493_3"
+```
+
+#### 2. Conectar con repositorio remoto
+```bash
+git remote add origin https://github.com/tu-usuario/EXAMEN-MF0493_3.git
+git branch -M main
+git push -u origin main
+```
+
+#### 3. Activar GitHub Pages
+1. Ve a tu repositorio en GitHub
+2. Abre **Settings** → **Pages**
+3. En "Build and deployment":
+   - **Source**: Selecciona "Deploy from a branch"
+   - **Branch**: Selecciona "main" y carpeta "/ (root)"
+4. Click en "Save"
+
+#### 4. Esperar a que se despliegue
+- GitHub desplegará automáticamente
+- Tu URL será: `https://tu-usuario.github.io/EXAMEN-MF0493_3/`
+- Tarda 1-2 minutos en estar disponible
+
+#### 5. Actualizar cambios futuros
+```bash
+# Hacer cambios, guardar archivos, luego:
+git add .
+git commit -m "Descripción del cambio"
+git push
+```
+
+### Verificar que todo funciona:
+✅ Entra a tu URL  
+✅ Abre DevTools (F12) → Application → Service Workers  
+✅ Debería mostrar el Service Worker registrado  
+✅ Intenta desconectar (offline) y recarga la página  
+
+---
+
+## 📱 Instalar como App en Dispositivo
+
+### En Android (Chrome, Firefox, Edge)
+
+1. **Abre la URL en tu navegador:**
+   - https://dujubdev.github.io/EXAMEN-MF0493_3/
+
+2. **Instalar app:**
+   - Toca el **menú** (⋮) arriba a la derecha
+   - Busca "Instalar aplicación" o "Agregar a pantalla de inicio"
+   - Toca la opción
+   - Aparecerá en tu pantalla de inicio
+
+3. **Características de la app instalada:**
+   - Funciona como app nativa
+   - Acceso offline
+   - Notificaciones (opcional)
+   - Icono propio en pantalla de inicio
+
+### En iPhone/iPad (Safari)
+
+1. **Abre la URL en Safari:**
+   - https://dujubdev.github.io/EXAMEN-MF0493_3/
+
+2. **Compartir y agregar:**
+   - Toca el **ícono Compartir** (↗️) en la barra inferior
+   - Desplázate y toca "Agregar a la pantalla de inicio"
+   - Dale un nombre (se sugiere "Rockify")
+   - Toca "Agregar"
+
+3. **Aparecerá en tu pantalla de inicio** como app
+
+### En Desktop (Windows/Mac)
+
+**Chrome/Edge:**
+1. Abre la URL
+2. Haz clic en el **icono de instalación** (↙️) en la barra de direcciones
+3. Haz clic en "Instalar"
+4. ¡Listo! Abre desde tu menú de aplicaciones
+
+**Firefox:**
+- No soporta instalación de PWA de forma nativa
+- Puedes crear un acceso directo manual
+
+---
+
+## ⚡ Verificar que la PWA funciona correctamente
+
+Después de instalar o desplegar:
+
+1. **Abre DevTools (F12)**
+2. Ve a **Application** → **Manifest**
+   - Deberías ver el contenido del `manifest.json`
+3. Ve a **Application** → **Service Workers**
+   - Deberías ver: `✓ Rockify PWA` registrado
+4. Ve a **Cache Storage**
+   - Deberías ver: `rockify-cache-v1`
+   - Dentro están todos los archivos precacheados
+
+5. **Prueba modo offline:**
+   - DevTools → **Network**
+   - Marca "Offline"
+   - Recarga la página
+   - **¡Debe seguir funcionando sin conexión!**
 
 ---
 

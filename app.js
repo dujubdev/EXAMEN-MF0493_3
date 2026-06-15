@@ -202,6 +202,9 @@ const mostrarDetalle = (idBanda) => {
   
   console.log(`• Mostrando detalle: ${bandaSeleccionada.nombre}`);
   
+  // Intentar obtener información adicional de la API
+  obtenerInfoAPI(bandaSeleccionada.nombre);
+  
   const modal = document.getElementById("modal-detalle");
   const contenidoModal = document.getElementById("contenido-modal");
   
@@ -313,6 +316,7 @@ const cargarFavoritos = () => {
   const favoritosGuardados = localStorage.getItem("favoritosRockify");
   favoritos = favoritosGuardados ? JSON.parse(favoritosGuardados) : [];
   console.log(`• Favoritos cargados: ${favoritos.length}`);
+  actualizarContadorFavoritos();
 };
 
 /**
@@ -321,6 +325,13 @@ const cargarFavoritos = () => {
 const guardarFavoritos = () => {
   localStorage.setItem("favoritosRockify", JSON.stringify(favoritos));
   console.log(`• Favoritos guardados: ${favoritos.length}`);
+};
+
+/**
+ * Actualiza el contador de favoritos en el header
+ */
+const actualizarContadorFavoritos = () => {
+  document.getElementById("contador-favoritos").textContent = favoritos.length;
 };
 
 /**
@@ -336,6 +347,7 @@ const toggleFavorito = (idBanda) => {
     console.log(`✓ Agregado a favoritos: ${idBanda}`);
   }
   guardarFavoritos();
+  actualizarContadorFavoritos();
 };
 
 /**
