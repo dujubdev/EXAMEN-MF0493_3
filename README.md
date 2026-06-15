@@ -16,6 +16,65 @@ La aplicación está desplegada en GitHub Pages y funciona completamente en el n
 
 ---
 
+## 🔀 Control de Versiones (Git)
+
+### Estructura de Ramas
+
+La aplicación sigue el flujo de trabajo **Git Flow** para desarrollo profesional:
+
+**`main` (rama principal)**
+- ✅ Versión estable y evaluable
+- ✅ Desplegada en GitHub Pages
+- ✅ Lista para producción
+- 📌 Commits sobre versiones liberadas
+
+**`develop` (rama de desarrollo)**
+- 🔧 Trabajo en mejoras y nuevas características
+- 🚀 Nuevas funcionalidades antes de liberar
+- 📝 Cambios no evaluados aún
+- 🔌 Integración de features
+
+### Flujo de Trabajo
+```bash
+# Crear rama para una nueva característica
+git checkout -b feature/nueva-caracteristica
+
+# Hacer cambios y commits
+git add .
+git commit -m "Agregar nueva característica"
+
+# Subir rama
+git push origin feature/nueva-caracteristica
+
+# Cuando está lista, hacer Pull Request a develop
+# Después merge a main para liberar versión
+
+# Volvemos a main para desplegar
+git checkout main
+git merge develop
+git push
+```
+
+### Historial de Versiones
+
+- **v1.0.0** (main) - Versión estable inicial
+  - HTML5 semántico con accesibilidad WCAG
+  - CSS3 responsivo (mobile first)
+  - JavaScript ES6+ con 15 bandas de rock
+  - PWA completo con Service Worker
+  - APIs integradas (OpenWeatherMap, TheAudioDB, YouTube)
+  - LocalStorage para favoritos y tema
+
+- **v1.1.0+** (develop) - Mejoras en progreso
+  - ✅ URLSearchParams para shortcuts (cuando accedes desde shortcut PWA, filtra automáticamente)
+  - ✅ Búsqueda + Filtro simultáneos (buscar dentro de la década seleccionada)
+  - ✅ Focus trap en modales (mejor accesibilidad)
+  - ✅ Cierre automático de reproductor (cuando cierras modal)
+  - ✅ Validación de youtubeId (no reproduce IDs vacíos o inválidos)
+  - ✅ Flujo Reproductor mejorado (cierra modal, muestra botón "Volver a Detalles")
+
+---
+
 ## ✨ Características Principales
 
 ### 🎵 Funcionalidades Principales

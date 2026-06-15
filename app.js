@@ -16,6 +16,7 @@ let bandasFiltradas = [...bandasRock];
 let favoritos = [];
 let bandaSeleccionada = null;
 let temaOscuro = localStorage.getItem("temaOscuro") === "true";
+let elementoActivoAntes = null; // Para focus trap en modales
 
 // ============================================================================
 // FUNCIONES DE INICIALIZACIÓN
@@ -32,6 +33,9 @@ const inicializarAplicacion = () => {
   renderizarBandas(bandasRock);
   obtenerClimaActual();
   registrarServiceWorker();
+  
+  // Aplicar filtro desde parámetros de URL (shortcuts PWA)
+  aplicarFiltroDesdeURL();
   
   // Agregar event listeners
   document.getElementById("filtro-decada").addEventListener("change", manejarFiltro);
@@ -68,6 +72,29 @@ const aplicarTemaSaved = () => {
   if (temaOscuro) {
     document.body.classList.add("tema-oscuro");
     document.getElementById("boton-tema").innerHTML = '<i class="fas fa-sun"></i> Tema Claro';
+  }
+};
+
+/**
+ * Lee parámetros de URL y aplica filtro de década (para shortcuts PWA)
+ */
+const aplicarFiltroDesdeURL = () => {
+  const params = new URLSearchParams(window.location.search);
+  
+  if (params.has('decada')) {
+    const decadaParam = params.get('decada');
+    const select = document.getElementById("filtro-decada");
+    
+    // Validar que el parámetro sea válido
+    const opcionesValidas = ["70s", "80s", "90s"];
+    
+    if (opcionesValidas.includes(decadaParam)) {
+      select.value = decadaParam;
+      filtrarPorDecada();
+      console.log(`→ Filtro aplicado desde URL: ${decadaParam}`);
+    } else {
+      console.warn(`⚠ Parámetro de década inválido: ${decadaParam}`);
+    }
   }
 };
 
@@ -150,6 +177,8 @@ const crearTarjetaBanda = (banda) => {
  * Maneja el evento de cambio en el filtro de década
  */
 const manejarFiltro = () => {
+  // Limpiar búsqueda cuando cambias de filtro
+  document.getElementById("buscador").value = "";
   filtrarPorDecada();
 };
 
@@ -170,17 +199,27 @@ const filtrarPorDecada = () => {
 };
 
 /**
- * Busca bandas por nombre
+ * Busca bandas por nombre manteniendo filtro de década activo
  */
 const buscarBandas = () => {
   const termino = document.getElementById("buscador").value.toLowerCase();
+  const decadaActual = document.getElementById("filtro-decada").value;
   
-  const resultados = bandasRock.filter((banda) => 
+  // Determinar en qué conjunto buscar (filtrado o completo)
+  const conjuntoBusqueda = decadaActual === "todas" ? bandasRock : bandasFiltradas;
+  
+  // Si está vacío el buscador, mostrar bandas del filtro actual
+  if (termino === "") {
+    renderizarBandas(bandasFiltradas);
+    return;
+  }
+  
+  const resultados = conjuntoBusqueda.filter((banda) => 
     banda.nombre.toLowerCase().includes(termino) ||
     banda.descripcion.toLowerCase().includes(termino)
   );
   
-  console.log(`→ Búsqueda: "${termino}" - ${resultados.length} resultados`);
+  console.log(`→ Búsqueda: "${termino}" en ${decadaActual} - ${resultados.length} resultados`);
   renderizarBandas(resultados);
 };
 
@@ -201,6 +240,9 @@ const mostrarDetalle = (idBanda) => {
   }
   
   console.log(`• Mostrando detalle: ${bandaSeleccionada.nombre}`);
+  
+  // Guardar elemento activo para restaurar focus después
+  elementoActivoAntes = document.activeElement;
   
   // Intentar obtener información adicional de la API
   obtenerInfoAPI(bandaSeleccionada.nombre);
@@ -257,6 +299,14 @@ const mostrarDetalle = (idBanda) => {
   
   modal.classList.add("activo");
   document.body.style.overflow = "hidden";
+  
+  // Focus trap: Enfocar primer botón interactivo del modal
+  setTimeout(() => {
+    const botonCerrar = modal.querySelector(".btn-cerrar-modal");
+    if (botonCerrar) {
+      botonCerrar.focus();
+    }
+  }, 100);
 };
 
 /**
@@ -266,7 +316,16 @@ const cerrarModal = () => {
   const modal = document.getElementById("modal-detalle");
   modal.classList.remove("activo");
   document.body.style.overflow = "auto";
+  
+  // Limpiar reproductor cuando cierras el modal
+  document.getElementById("contenedor-reproductor").innerHTML = "";
+  
   bandaSeleccionada = null;
+  
+  // Restaurar focus al elemento que abrió el modal
+  if (elementoActivoAntes) {
+    elementoActivoAntes.focus();
+  }
 };
 
 // ============================================================================
@@ -278,15 +337,37 @@ const cerrarModal = () => {
  * @param {String} youtubeId - ID del video de YouTube
  */
 const crearReproductor = (youtubeId) => {
+  // Validar que youtubeId sea válido
+  if (!youtubeId || youtubeId.trim() === "") {
+    console.error("✗ ID de YouTube inválido o vacío");
+    return;
+  }
+  
   console.log(`→ Reproduciendo: ${youtubeId}`);
+  
+  // Cerrar el modal automáticamente
+  const modal = document.getElementById("modal-detalle");
+  modal.classList.remove("activo");
+  document.body.style.overflow = "auto";
   
   const contenedorReproductor = document.getElementById("contenedor-reproductor");
   
+  // Obtener información de la canción actual
+  const cancionActual = bandaSeleccionada.canciones.find(c => c.youtubeId === youtubeId);
+  const nombreCancion = cancionActual ? `"${cancionActual.titulo}"` : "Reproduciendo...";
+  const nombreBanda = bandaSeleccionada.nombre;
+  
   contenedorReproductor.innerHTML = `
     <div class="reproductor-activo">
-      <button class="btn-cerrar-reproductor" aria-label="Cerrar reproductor">
-        <i class="fas fa-times"></i>
-      </button>
+      <div class="reproductor-header">
+        <div class="reproductor-info">
+          <h3><i class="fas fa-music"></i> ${nombreCancion}</h3>
+          <p>${nombreBanda}</p>
+        </div>
+        <button class="btn-cerrar-reproductor" aria-label="Cerrar reproductor">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
       <iframe 
         width="100%" 
         height="400" 
@@ -297,11 +378,22 @@ const crearReproductor = (youtubeId) => {
         allowfullscreen
         aria-label="Reproductor de video">
       </iframe>
+      <div class="reproductor-footer">
+        <button class="btn-volver-detalles" aria-label="Volver a detalles de banda">
+          <i class="fas fa-arrow-left"></i> Volver a Detalles
+        </button>
+      </div>
     </div>
   `;
   
+  // Evento para cerrar reproductor
   document.querySelector(".btn-cerrar-reproductor").addEventListener("click", () => {
     contenedorReproductor.innerHTML = "";
+  });
+  
+  // Evento para volver a detalles
+  document.querySelector(".btn-volver-detalles").addEventListener("click", () => {
+    mostrarDetalle(bandaSeleccionada.id);
   });
 };
 

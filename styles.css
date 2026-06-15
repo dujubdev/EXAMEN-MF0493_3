@@ -653,6 +653,8 @@ input[type="search"]:hover {
   overflow: hidden;
   box-shadow: var(--sombra-media);
   animation: slideDown 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes slideDown {
@@ -666,17 +668,39 @@ input[type="search"]:hover {
   }
 }
 
+.reproductor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--espaciado-md);
+  background: linear-gradient(135deg, var(--color-principal) 0%, var(--color-principal-hover) 100%);
+  color: white;
+  border-bottom: 2px solid var(--color-principal);
+}
+
+.reproductor-info h3 {
+  font-size: 1.2rem;
+  margin: 0 0 var(--espaciado-xs) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--espaciado-sm);
+}
+
+.reproductor-info p {
+  margin: 0;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
 .reproductor-activo iframe {
   display: block;
   border: none;
-  border-radius: 12px;
+  flex: 1;
 }
 
 .btn-cerrar-reproductor {
-  position: absolute;
-  top: var(--espaciado-sm);
-  right: var(--espaciado-sm);
-  background: var(--color-principal);
+  position: relative;
+  background: rgba(255, 255, 255, 0.2);
   color: white;
   width: 2.5rem;
   height: 2.5rem;
@@ -687,10 +711,45 @@ input[type="search"]:hover {
   font-size: 1.2rem;
   z-index: 10;
   transition: var(--transicion);
+  flex-shrink: 0;
 }
 
 .btn-cerrar-reproductor:hover {
-  background: var(--color-principal-hover);
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.reproductor-footer {
+  padding: var(--espaciado-md);
+  background-color: var(--fondo-principal);
+  border-top: 1px solid var(--borde-color);
+  display: flex;
+  gap: var(--espaciado-sm);
+}
+
+.btn-volver-detalles {
+  flex: 1;
+  padding: var(--espaciado-sm);
+  background: linear-gradient(135deg, var(--color-secundario) 0%, #4db3a8 100%);
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaciado-sm);
+  transition: var(--transicion);
+  white-space: nowrap;
+}
+
+.btn-volver-detalles:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-media);
+}
+
+.btn-volver-detalles:active {
+  transform: translateY(0);
 }
 
 /* ============================================================================
