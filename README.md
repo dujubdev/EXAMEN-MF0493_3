@@ -66,10 +66,12 @@ git push
   - LocalStorage para favoritos y tema
 
 - **v1.1.0+** (develop) - Mejoras en progreso
-  - Focus trap en modales
-  - URLSearchParams para shortcuts
-  - Notificaciones toast de favoritos
-  - Validación mejorada de youtubeId
+  - ✅ URLSearchParams para shortcuts (cuando accedes desde shortcut PWA, filtra automáticamente)
+  - ✅ Búsqueda + Filtro simultáneos (buscar dentro de la década seleccionada)
+  - ✅ Focus trap en modales (mejor accesibilidad)
+  - ✅ Cierre automático de reproductor (cuando cierras modal)
+  - ✅ Validación de youtubeId (no reproduce IDs vacíos o inválidos)
+  - ✅ Flujo Reproductor mejorado (cierra modal, muestra botón "Volver a Detalles")
 
 ---
 
