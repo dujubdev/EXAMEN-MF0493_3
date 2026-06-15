@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rockify - Aplicación PWA dedicada al mejor rock de los 70s, 80s y 90s">
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <title>Rockify - PWA Rock</title>
+    
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23ff6b6b' width='192' height='192'/><text x='50%' y='50%' font-size='100' font-weight='bold' fill='white' text-anchor='middle' dy='.3em'>🎸</text></svg>">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="./styles.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- ========== ENCABEZADO ========== -->
+    <header class="encabezado">
+        <div class="encabezado-contenedor">
+            <div class="logo">
+                <i class="fas fa-guitar"></i>
+                <h1>Rockify</h1>
+            </div>
+            
+            <div class="encabezado-derechos">
+                <div id="info-clima" class="info-clima" role="status">
+                    <span><i class="fas fa-spinner fa-spin"></i> Cargando clima...</span>
+                </div>
+                
+                <button id="btn-favoritos" class="btn-header" aria-label="Ver mis bandas favoritas" title="Mis Favoritos">
+                    <i class="fas fa-heart"></i>
+                    <span id="contador-favoritos" class="contador">0</span>
+                </button>
+                
+                <button id="boton-tema" class="btn-header" aria-label="Cambiar tema" title="Cambiar tema">
+                    <i class="fas fa-moon"></i> Tema Oscuro
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== NAVEGACIÓN ========== -->
+    <nav class="navegacion" role="navigation" aria-label="Navegación principal">
+        <div class="navegacion-contenedor">
+            <div class="filtros">
+                <label for="filtro-decada">
+                    <i class="fas fa-filter"></i> Filtrar por década:
+                </label>
+                <select id="filtro-decada" aria-label="Seleccionar década">
+                    <option value="todas">Todas las Décadas</option>
+                    <option value="70s">70s - Era Dorada</option>
+                    <option value="80s">80s - Rock Explosivo</option>
+                    <option value="90s">90s - Grunge y Alternativo</option>
+                </select>
+            </div>
+            
+            <div class="busqueda">
+                <label for="buscador" class="sr-only">Buscar bandas</label>
+                <input 
+                    type="search" 
+                    id="buscador" 
+                    placeholder="🔍 Buscar bandas..." 
+                    aria-label="Buscar bandas de rock"
+                >
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== CONTENIDO PRINCIPAL ========== -->
+    <main class="contenido-principal" role="main">
+        <!-- Reproductor flotante -->
+        <section id="contenedor-reproductor" class="contenedor-reproductor" aria-label="Reproductor de música"></section>
+
+        <!-- Sección de bandas -->
+        <section class="seccion-bandas" aria-labelledby="titulo-bandas">
+            <h2 id="titulo-bandas" class="titulo-seccion">
+                <i class="fas fa-compact-disc"></i> Bandas de Rock Legendarias
+            </h2>
+            
+            <div id="lista-bandas" class="lista-bandas" role="list">
+                <!-- Se rellena dinámicamente con JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- ========== MODAL DE DETALLE ========== -->
+    <div id="modal-detalle" class="modal" role="dialog" aria-labelledby="modal-titulo">
+        <div class="modal-contenido">
+            <button class="btn-cerrar-modal" aria-label="Cerrar detalles" title="Cerrar">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="contenido-modal">
+                <!-- Se rellena dinámicamente con JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== PIE DE PÁGINA ========== -->
+    <footer class="pie-pagina" role="contentinfo">
+        <div class="contenedor-pie">
+            <div class="seccion-pie">
+                <h3><i class="fas fa-info-circle"></i> Sobre el Proyecto</h3>
+                <p>
+                    <strong>Rockify</strong> es una aplicación web progresiva (PWA) 
+                    dedicada a las bandas de rock más legendarias de los 70s, 80s y 90s. 
+                    Desarrollada con HTML5, CSS3 y JavaScript vanilla.
+                </p>
+            </div>
+            
+            <div class="seccion-pie">
+                <h3><i class="fas fa-tools"></i> Tecnologías</h3>
+                <ul>
+                    <li>HTML5 Semántico</li>
+                    <li>CSS3 Responsivo</li>
+                    <li>JavaScript ES6+</li>
+                    <li>Service Worker</li>
+                    <li>LocalStorage</li>
+                </ul>
+            </div>
+            
+            <div class="seccion-pie">
+                <h3><i class="fas fa-link"></i> APIs Utilizadas</h3>
+                <ul>
+                    <li>YouTube Embed</li>
+                    <li>TheAudioDB</li>
+                    <li>OpenWeatherMap</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="pie-inferior">
+            <p>
+                © 2024 Rockify - Módulo MF0493_3 
+                | Desarrollo y Despliegue de WebApp PWA 
+                | 🎸 Rock Forever
+            </p>
+        </div>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <!-- Base de datos -->
+    <script src="./datos.js"></script>
+    
+    <!-- Aplicación principal -->
+    <script src="./app.js"></script>
+</body>
+</html>
